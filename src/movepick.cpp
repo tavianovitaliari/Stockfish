@@ -260,7 +260,11 @@ top:
             endMoves = beginBadQuiets = endBadQuiets = generate<QUIETS>(pos, cur);
 
             score<QUIETS>();
-            partial_insertion_sort(cur, endMoves, quiet_threshold(depth));
+
+            if (std::distance(cur, endMoves) > 4)
+                partial_insertion_sort(cur, endMoves, quiet_threshold(depth));
+            else
+                partial_insertion_sort(cur, endMoves, std::numeric_limits<int>::min());
         }
 
         ++stage;
