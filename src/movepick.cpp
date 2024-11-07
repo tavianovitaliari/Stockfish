@@ -175,9 +175,21 @@ void MovePicker::score() {
                                                : 0;
 
             // malus for putting piece en prise
-            m.value -= (pt == QUEEN ? bool(to & threatenedByRook) * 49000
-                        : pt == ROOK && bool(to & threatenedByMinor) ? 24335
-                                                                     : 0);
+            if (pt == QUEEN) {
+                if (to & threatenedByPawn)
+                    m.value -= 97998;
+                else if (to & threatenedByMinor)
+                    m.value -= 65332;
+                else if (to & threatenedByRook)
+                    m.value -= 32666;
+            }
+
+            if (pt == ROOK) {
+                if (to & threatenedByPawn)
+                    m.value -= 32446;
+                else if (to & threatenedByMinor)
+                    m.value -= 16223;
+            }
 
             if (ply < LOW_PLY_HISTORY_SIZE)
                 m.value += 8 * (*lowPlyHistory)[ply][m.from_to()] / (1 + 2 * ply);
